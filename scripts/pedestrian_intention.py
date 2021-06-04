@@ -49,40 +49,60 @@ def execute(image):
     counts, objects, peaks = parse_objects(cmap, paf)#, cmap_threshold=0.15, link_threshold=0.15)
     draw_objects(image, counts, objects, peaks)
     # image_w.value = bgr8_to_jpeg(image[:, ::-1, :])
-    cv2.imshow(image)
-    return (counts, objects, peaks)
+    # cv2.imshow(image)
+    return()
+
+def get_keypoint(humans, hnum, peaks):
+    #check invalid human index
+    kpoint = []
+    human = humans[0][hnum]
+    C = human.shape[0]
+    for j in range(C):
+        k = int(human[j])
+        if k >= 0:
+            peak = peaks[0][j][k]   # peak[1]:width, peak[0]:height
+            peak = (j, float(peak[0]), float(peak[1]))
+            kpoint.append(peak)
+            #print('index:%d : success [%5.3f, %5.3f]'%(j, peak[1], peak[2]) )
+        else:    
+            peak = (j, None, None)
+            kpoint.append(peak)
+            #print('index:%d : None %d'%(j, k) )
+    return kpoint
+
+def execute(img):
+    image_vec = []
+    data = preprocess(img)
+    cmap, paf = model_trt(data)
+    cmap, paf = cmap.detach().cpu(), paf.detach().cpu()
+    counts, objects, peaks = parse_objects(cmap, paf)#, cmap_threshold=0.15, link_threshold=0.15)
+    for i in range(counts[0]):
+        keypoints = get_keypoint(objects, i, peaks)
+        for j in range(len(keypoints)):
+            if keypoints[j][1]:
+                x = keypoints[j][2]
+                y = keypoints[j][1]
+                point = [j,x,y]
+                image_vec.append(point)
+    #draw_objects(img, counts, objects, peaks)
+    return image_vec
+
+
+
 
 def classification_determination(data):
     # kp = 0.3
     global classification_bool
     classification_bool = Bool()
     # Image processing from rosparams
-    frame = decodeImage(data.data, data.height, data.width)
+    frame = decodeImage(data.data, 224, 224)
     
-    image = utils.preprocess(frame)
-    pose_data = utils.execute(image)
+    image = preprocess(frame)
+    pose_data = execute(image)
     print(pose_data)
     classification_bool=True
-    # steering_float = Float32()
-    # throttle_float = Float32()
-    # centroid = msg.data[0]
-    # width = msg.data[1]  # width of camera frame
+    
 
-    # if msg.data == 0:
-    #     error_x = 0
-    #     throttle_float = 0.95
-    # else:
-    #     error_x = float(centroid - (width / 2))
-    #     throttle_float = 1.0
-
-    # steering_float = float(kp * (error_x / (width / 2)))
-    # if steering_float < -1:
-    #     steering_float = -1
-    # elif steering_float > 1:
-    #     steering_float = 1
-    # else:
-    #     pass
-    # steering_pub.publish(steering_float)
     classification_pub.publish(classification_bool)
 
 
