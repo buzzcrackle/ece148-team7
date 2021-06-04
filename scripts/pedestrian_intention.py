@@ -91,13 +91,13 @@ def execute(img):
 
 
 def classification_determination(data):
-    # kp = 0.3
+    
     global classification_bool
     classification_bool = Bool()
     # Image processing from rosparams
     frame = decodeImage(data.data, 224, 224)
-    
-    image = preprocess(frame)
+    img = cv2.resize(frame, dsize=(WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
+    image = preprocess(img)
     pose_data = execute(image)
     print(pose_data)
     classification_bool=True
