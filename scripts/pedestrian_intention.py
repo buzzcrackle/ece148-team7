@@ -93,8 +93,8 @@ def classification_determination(data):
     global classification_bool
     classification_bool = Bool()
     # Image processing from rosparams
-    frame = decodeImage(data.data, 224, 224)
-    img = cv2.resize(frame, dsize=(WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
+    frame = decodeImage(data.data, data.height, data.width)
+    img = cv2.resize(frame, dsize=(224, 224), interpolation=cv2.INTER_AREA)
     image = preprocess(img)
     pose_data = execute(image)
     print(pose_data)
