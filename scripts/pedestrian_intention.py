@@ -14,11 +14,11 @@ import torch2trt
 from torch2trt import TRTModule
 import torchvision.transforms as transforms
 import PIL.Image
-from trt_pose.draw_objects import DrawObjects
+# from trt_pose.draw_objects import DrawObjects
 from trt_pose.parse_objects import ParseObjects
-from jetcam.usb_camera import USBCamera
+# from jetcam.usb_camera import USBCamera
 # from jetcam.csi_camera import CSICamera
-from jetcam.utils import bgr8_to_jpeg
+# from jetcam.utils import bgr8_to_jpeg
 # import matplotlib.pyplot as plt
 # import ipywidgets
 # from IPython.display import display
