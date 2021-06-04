@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import rospy
 from std_msgs.msg import Bool
+from std_msgs.msg import Float32
 
 CLASSIFICATION_NODE_NAME = 'classification_sub_node'
 CLASSIFICATION_TOPIC_NAME = '/classification'
-
+THROTTLE_TOPIC_NAME = '/throttle'
 
 def callback(data):
     # output_start= rospy.get_param("/Throttle_max_reverse")

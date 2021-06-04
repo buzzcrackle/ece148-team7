@@ -36,7 +36,7 @@ def LineFollower(msg):
     else:
         pass
     steering_pub.publish(steering_float)
-    throttle_pub.publish(throttle_float)
+    # throttle_pub.publish(throttle_float)
 
 
 if __name__ == '__main__':
