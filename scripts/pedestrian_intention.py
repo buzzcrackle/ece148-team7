@@ -42,15 +42,15 @@ def preprocess(image):
     image.sub_(mean[:, None, None]).div_(std[:, None, None])
     return image[None, ...]
 
-def execute(image):
-    data = preprocess(image)
-    cmap, paf = model_trt(data)
-    cmap, paf = cmap.detach().cpu(), paf.detach().cpu()
-    counts, objects, peaks = parse_objects(cmap, paf)#, cmap_threshold=0.15, link_threshold=0.15)
-    draw_objects(image, counts, objects, peaks)
-    # image_w.value = bgr8_to_jpeg(image[:, ::-1, :])
-    # cv2.imshow(image)
-    return()
+# def execute(image):
+#     data = preprocess(image)
+#     cmap, paf = model_trt(data)
+#     cmap, paf = cmap.detach().cpu(), paf.detach().cpu()
+#     counts, objects, peaks = parse_objects(cmap, paf)#, cmap_threshold=0.15, link_threshold=0.15)
+#     draw_objects(image, counts, objects, peaks)
+#     # image_w.value = bgr8_to_jpeg(image[:, ::-1, :])
+#     # cv2.imshow(image)
+#     return()
 
 def get_keypoint(humans, hnum, peaks):
     #check invalid human index
@@ -86,8 +86,6 @@ def execute(img):
                 image_vec.append(point)
     #draw_objects(img, counts, objects, peaks)
     return image_vec
-
-
 
 
 def classification_determination(data):
