@@ -10,7 +10,7 @@ kit = ServoKit(channels=16)
     more documentation at https://learn.adafruit.com/16-channel-pwm-servo-driver/python-circuitpython
     throttle servo is on channel 0 
 '''
-throttle_scale = 0.07  # scale down sensitive throttle
+throttle_scale = 0.1  # scale down sensitive throttle
 #throttle_scale = 1.0  # scale down sensitive throttle
 
 def callback(data):

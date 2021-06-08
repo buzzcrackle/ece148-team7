@@ -21,18 +21,20 @@ def callback(data):
     if classification_data == False:
         throttle_float = 0
     elif classification_data == True:
-        throttle_float = 1.0
+        throttle_float = 0.40
     throttle_pub.publish(throttle_float)
 
 
 
 
-def listener():
-    rospy.init_node(CLASSIFICATION_NODE_NAME, anonymous=False)
-    throttle_pub = rospy.Publisher(THROTTLE_TOPIC_NAME, Float32, queue_size=1)
-    rospy.Subscriber(CLASSIFICATION_TOPIC_NAME, Bool, callback)
-    rospy.spin()
+# def listener():
+    
 
 
 if __name__ == '__main__':
-    listener()
+    rospy.init_node(CLASSIFICATION_NODE_NAME, anonymous=False)
+    throttle_pub = rospy.Publisher(THROTTLE_TOPIC_NAME, Float32, queue_size=1)
+    rospy.Subscriber(CLASSIFICATION_TOPIC_NAME, Bool, callback)
+    while not rospy.is_shutdown():
+        rospy.spin()
+        rate.sleep()

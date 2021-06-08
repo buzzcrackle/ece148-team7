@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from cv_bridge import CvBridge
 import glob
 from sklearn.svm import SVC
 from sklearn.pipeline import make_pipeline
@@ -27,13 +26,15 @@ import torchvision.transforms as transforms
 import PIL.Image
 # from trt_pose.draw_objects import DrawObjects
 from trt_pose.parse_objects import ParseObjects
-# from jetcam.usb_camera import USBCamera
-# from jetcam.csi_camera import CSICamera
-# from jetcam.utils import bgr8_to_jpeg
-# import matplotlib.pyplot as plt
-# import ipywidgets
-# from IPython.display import display
-# import utils
+
+
+from cv_bridge import CvBridge
+
+CAMERA_NODE_NAME = 'camera_server'
+CAMERA_TOPIC_NAME = 'camera_rgb'
+
+cv2_video_capture = cv2.VideoCapture(0)
+CAMERA_FREQUENCY = 10  # Hz
 
 CLASSIFICATION_NODE_NAME = 'classification_node'
 CLASSIFICATION_TOPIC_NAME = '/classification'
@@ -50,9 +51,9 @@ type_str = String()
 # steering_float = Float32()
 # throttle_float = Float32()
 def preprocess(image):
-    global device
-    device = torch.device('cuda')
-    image = cv2.cvtColor(np.float32(image), cv2.COLOR_BGR2RGB)
+    # global device
+    # device = torch.device('cuda')
+    # image = cv2.cvtColor(np.float32(image, cv2.COLOR_BGR2RGB)
     image = cv2.resize(np.float32(image), dsize=(224, 224), interpolation=cv2.INTER_AREA)
     image = PIL.Image.fromarray(image)
     image = transforms.functional.to_tensor(image).to(device)
@@ -94,44 +95,18 @@ def execute(img):
     #draw_objects(img, counts, objects, peaks)
     return image_vec
 
-
-
-
-def classification_determination(data):
-    global classification_bool
-    global type_str
-    classification_bool = Bool()
-    type_str = String()
-    
-    type_str = 'in classification function'
-    type_pub.publish(type_str)
-    
-    bridge = CvBridge()
-
-    image = bridge.imgmsg_to_cv2(data, "brg8")
-    type_str = 'changed image'
-    type_pub.publish(type_str)
-    # Image processing from rosparams
-    # image = decodeImage(data.data, data.height, data.width)
-    # image = bridge.imgmsg_to_cv2(image)
-
-
-    # image = preprocess(image)
-    # img = cv2.resize(image, dsize=(224, 224), interpolation=cv2.INTER_AREA)
-    # image = preprocess(img)
-    pose_data = execute(image)
-    # print(pose_data)
-
-    type_str = str(pose_data)
-    type_pub.publish(type_str)
-    
-    classification_bool=True
     
 
-    classification_pub.publish(classification_bool)
 
 
 if __name__ == '__main__':
+    
+    pub = rospy.Publisher(CAMERA_TOPIC_NAME, Image, queue_size=10)
+    rospy.init_node(CAMERA_NODE_NAME, anonymous=True)
+    rate = rospy.Rate(CAMERA_FREQUENCY)
+
+    
+
     with open('/home/jetson/projects/catkin_ws/src/ece148/scripts/human_pose.json', 'r') as f:
         human_pose = json.load(f)
 
@@ -141,7 +116,10 @@ if __name__ == '__main__':
     num_links = len(human_pose['skeleton'])
 
     model = trt_pose.models.resnet18_baseline_att(num_parts, 2 * num_links).cuda().eval()
-    
+    # parser = argparse.ArgumentParser(description='TensorRT pose estimation run')
+    # parser.add_argument('--image', type=str, default='/home/spypiggy/src/test_images/humans_7.jpg')
+    # parser.add_argument('--model', type=str, default='resnet', help = 'resnet or densenet' )
+    # args = parser.parse_args()
     # MODEL_WEIGHTS = '/home/jetson/projects/catkin_ws/src/ece148/scripts/resnet18_baseline_att_224x224_A_epoch_249.pth'
 
     # model.load_state_dict(torch.load(MODEL_WEIGHTS))
@@ -171,16 +149,58 @@ if __name__ == '__main__':
     mean = torch.Tensor([0.485, 0.456, 0.406]).cuda()
     std = torch.Tensor([0.229, 0.224, 0.225]).cuda()
     device = torch.device('cuda')
+
+    # -------------------train model-------------------
+    # call model trainging script using training set of 100 images 50 stop 50 go and 
+    # vector of 50 0's and 50 1's
     
 
 
-    rospy.init_node(CLASSIFICATION_NODE_NAME, anonymous=False)
-    camera_sub = rospy.Subscriber(CAMERA_TOPIC_NAME, Image, classification_determination)
+    # rospy.init_node(CLASSIFICATION_NODE_NAME, anonymous=False)
+    # camera_sub = rospy.Subscriber(CAMERA_TOPIC_NAME, Image, classification_determination)
     classification_pub = rospy.Publisher(CLASSIFICATION_TOPIC_NAME, Bool, queue_size=1)
     type_pub = rospy.Publisher(TYPE_TOPIC_NAME, String, queue_size=1)
 
     rate = rospy.Rate(15)
     while not rospy.is_shutdown():
+        ret, frame = cv2_video_capture.read()
 
+        # construct msg
+        try: 
+            bridge = CvBridge()
+            rgb = bridge.cv2_to_imgmsg(frame)
+            pub.publish(rgb)
+        except TypeError:
+            pass
+        rate.sleep()
+        
+        
+        classification_bool = Bool()
+
+        
+        type_str = String()
+
+        # src = cv2.imread(fra cv2.IMREAD_COLOR)
+        image = cv2.resize(frame, dsize=(WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
+        # bridge = CvBridge()
+        
+        # Image processing from rosparams
+        # image = decodeImage(data.data, data.height, data.width)
+        # image = bridge.imgmsg_to_cv2(data.data)
+
+
+        # image = preprocess(frame)
+        # img = cv2.resize(image, dsize=(224, 224), interpolation=cv2.INTER_AREA)
+        # image = preprocess(img)
+        pose_data = execute(image)
+        # print(pose_data)
+
+        type_str = str(pose_data)
+        type_pub.publish(type_str)
+        
+        classification_bool=True
+        
+
+        classification_pub.publish(classification_bool)
         rospy.spin()
         rate.sleep()

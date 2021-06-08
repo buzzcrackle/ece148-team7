@@ -1,0 +1,3 @@
+<launch>
+  <node name="ped_int" pkg="ucsd_robo_car_simple_ros" type="ped_int_all_in_1.py" />
+</launch>
