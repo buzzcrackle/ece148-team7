@@ -59,6 +59,19 @@ def preprocess(image):
     image.sub_(mean[:, None, None]).div_(std[:, None, None])
     return image[None, ...]
 
+<<<<<<< HEAD
+=======
+# def execute(image):
+#     data = preprocess(image)
+#     cmap, paf = model_trt(data)
+#     cmap, paf = cmap.detach().cpu(), paf.detach().cpu()
+#     counts, objects, peaks = parse_objects(cmap, paf)#, cmap_threshold=0.15, link_threshold=0.15)
+#     draw_objects(image, counts, objects, peaks)
+#     # image_w.value = bgr8_to_jpeg(image[:, ::-1, :])
+#     # cv2.imshow(image)
+#     return()
+
+>>>>>>> 6d99a7e50ac8e8f9c0c74102741f1e434d3f9134
 def get_keypoint(humans, hnum, peaks):
     #check invalid human index
     kpoint = []
@@ -95,8 +108,6 @@ def execute(img):
     return image_vec
 
 
-
-
 def classification_determination(data):
     global classification_bool
     global type_str
@@ -112,6 +123,7 @@ def classification_determination(data):
     type_str = 'changed image'
     type_pub.publish(type_str)
     # Image processing from rosparams
+<<<<<<< HEAD
     # image = decodeImage(data.data, data.height, data.width)
     # image = bridge.imgmsg_to_cv2(image)
 
@@ -119,6 +131,11 @@ def classification_determination(data):
     # image = preprocess(image)
     # img = cv2.resize(image, dsize=(224, 224), interpolation=cv2.INTER_AREA)
     # image = preprocess(img)
+=======
+    frame = decodeImage(data.data, data.height, data.width)
+    img = cv2.resize(frame, dsize=(224, 224), interpolation=cv2.INTER_AREA)
+    image = preprocess(img)
+>>>>>>> 6d99a7e50ac8e8f9c0c74102741f1e434d3f9134
     pose_data = execute(image)
     # print(pose_data)
 
