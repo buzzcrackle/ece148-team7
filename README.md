@@ -2,10 +2,30 @@
 
 ROS implementation of pedestrian intention (stopping for pedestrian crossing). Built off of Dominic Nightingale's [ucsd_robo_car_simple_ros](https://gitlab.com/djnighti/ucsd_robo_car_simple_ros). 
 
-## Added files
+### Setup Instructions
+  - Follow Dominic's instructions below this section.
+    - Remember to calibrate and tune the lane guidance
+  - Follow instructions for [ROS Intel Realsense](https://github.com/IntelRealSense/realsense-ros)
+  - Follow instructions for [TRT_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
+  - Clone our [Jupyter notebook repo](https://github.com/buzzcrackle/ece148-team7-notebooks)
+    - Follow our README.md instructions to collect data, train, and produce TRT model
+    - Copy TRT-optimized model into ./scripts/
 
-The rest are the included instructions/documentation from Dominic's original repo.
+### Launch instructions
+Note: This may take upwards of 20-30 minutes.
 
+First, run the following command in a terminal
+`roscore`
+
+In a separate terminal, run
+`roslaunch ucsd_robo_car_simple_ros all_in_1.launch`
+Because this takes a lot of computational resources, it is best to wait for it to finish before running the other launches. You will know it finished when you get an output from the following command
+`rostopic echo /classification`
+
+When that finished, run the rest of the launches all in separate terminals
+`roslaunch ucsd_robo_car_simple_ros realsense_launch.launch`
+`roslaunch ucsd_robo_car_simple_ros throttle_and_steering_launch.launch`
+`roslaunch ucsd_robo_car_simple_ros laneDetection_launch.launch`
 ---
 
 # ucsd_robo_car_simple_ros
