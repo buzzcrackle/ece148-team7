@@ -6,7 +6,7 @@ ROS implementation of pedestrian intention (stopping for pedestrian crossing). B
 This is misleadingly short.
   - You need Jetpack [4.5.1 or above](https://developer.nvidia.com/embedded/jetpack), instructions to reflash Jetson [here](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#write)
   - You will also need the following toolkits
-    - [DeepStream SDK 5.0](https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_Quickstart.html)
+    - [DeepStream SDK 5.1+](https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_Quickstart.html)
     - CUDA 10.2 (included with Jetpack 4.5.1)
     - TensorRT 7.x (included with Jetpack 4.5.1)
   - Follow Dominic's instructions below this section.
