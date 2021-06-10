@@ -13,6 +13,7 @@ This is misleadingly short.
     - Remember to calibrate and tune the lane guidance
   - Follow setup instructions for [ROS Intel Realsense](https://github.com/IntelRealSense/realsense-ros)
   - Follow setup instructions for [TRT_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
+    - Consider increasing the swap file size if the process gets killed for any pose estimation related scripts.
   - Clone our [Jupyter notebook repo](https://github.com/buzzcrackle/ece148-team7-notebooks)
     - Follow our README.md instructions to collect data, train, and produce TRT model
     - Copy TRT-optimized model into ./scripts/
