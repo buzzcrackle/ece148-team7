@@ -18,7 +18,7 @@ This is misleadingly short.
     - Copy TRT-optimized model into ./scripts/
 
 ### Launch instructions
-Note: This may take upwards of 20-30 minutes.
+Note: This may take upwards of 20-30 minutes, depending on optimization.
 
 First, run the following command in a terminal
 
