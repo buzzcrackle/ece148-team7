@@ -3,10 +3,16 @@
 ROS implementation of pedestrian intention (stopping for pedestrian crossing). Built off of Dominic Nightingale's [ucsd_robo_car_simple_ros](https://gitlab.com/djnighti/ucsd_robo_car_simple_ros). 
 
 ### Setup Instructions
+This is misleadingly short.
+  - You need Jetpack [4.5.1 or above](https://developer.nvidia.com/embedded/jetpack), instructions to reflash Jetson [here](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#write)
+  - You will also need the following toolkits
+    - [DeepStream SDK 5.0](https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_Quickstart.html)
+    - CUDA 10.2 (included with Jetpack 4.5.1)
+    - TensorRT 7.x (included with Jetpack 4.5.1)
   - Follow Dominic's instructions below this section.
     - Remember to calibrate and tune the lane guidance
-  - Follow instructions for [ROS Intel Realsense](https://github.com/IntelRealSense/realsense-ros)
-  - Follow instructions for [TRT_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
+  - Follow setup instructions for [ROS Intel Realsense](https://github.com/IntelRealSense/realsense-ros)
+  - Follow setup instructions for [TRT_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
   - Clone our [Jupyter notebook repo](https://github.com/buzzcrackle/ece148-team7-notebooks)
     - Follow our README.md instructions to collect data, train, and produce TRT model
     - Copy TRT-optimized model into ./scripts/
