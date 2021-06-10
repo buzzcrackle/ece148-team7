@@ -9,7 +9,8 @@ import time
 
 
 LANE_DETECTION_NODE_NAME = 'lane_detection_node'
-CAMERA_TOPIC_NAME = 'camera_rgb'
+#CAMERA_TOPIC_NAME = 'camera_rgb'
+CAMERA_TOPIC_NAME = 'camera/color/image_raw'
 CENTROID_TOPIC_NAME = '/centroid'
 
 global mid_x, mid_y
