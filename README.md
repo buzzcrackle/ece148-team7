@@ -15,17 +15,25 @@ ROS implementation of pedestrian intention (stopping for pedestrian crossing). B
 Note: This may take upwards of 20-30 minutes.
 
 First, run the following command in a terminal
+
 `roscore`
 
 In a separate terminal, run
+
 `roslaunch ucsd_robo_car_simple_ros all_in_1.launch`
+
 Because this takes a lot of computational resources, it is best to wait for it to finish before running the other launches. You will know it finished when you get an output from the following command
+
 `rostopic echo /classification`
 
 When that finished, run the rest of the launches all in separate terminals
+
 `roslaunch ucsd_robo_car_simple_ros realsense_launch.launch`
+
 `roslaunch ucsd_robo_car_simple_ros throttle_and_steering_launch.launch`
+
 `roslaunch ucsd_robo_car_simple_ros laneDetection_launch.launch`
+
 ---
 
 # ucsd_robo_car_simple_ros
