@@ -1,5 +1,7 @@
 # ECE/MAE 148 Team 7 Autonomous Vehicle Project
 
+## [WIKI PAGE](https://guitar.ucsd.edu/maeece148/index.php/2021SpringTeam7) and separate [ML JUPYTER NOTEBOOKS](https://github.com/buzzcrackle/ece148-team7-notebooks/)
+
 ROS implementation of pedestrian intention (stopping for pedestrian crossing). Built off of Dominic Nightingale's [ucsd_robo_car_simple_ros](https://gitlab.com/djnighti/ucsd_robo_car_simple_ros). 
 
 ### Setup Instructions
